@@ -1,0 +1,29 @@
+{
+  "name": "@nick/clsx",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": {
+    "name": "Nicholas Berlette",
+    "email": "nick@berlette.com",
+    "url": "https://github.com/nberlette"
+  },
+  "exports": "./mod.ts",
+  "lock": false,
+  "publish": {
+    "include": ["*.md", "*.ts", "*.json", "LICENSE"],
+    "exclude": ["*.test.*"]
+  },
+  "tasks": {
+    "test": "deno test -A --check --coverage=.coverage",
+    "coverage": "deno coverage --html .coverage",
+    "coverage:open": "deno task coverage && open .coverage/html/index.html",
+    "lint": "deno lint .",
+    "fmt": "deno fmt .",
+    "docs": "deno doc --html --name=@nick/clsx --output=docs mod.ts",
+    "docs-test-coverage": "deno task test && deno task coverage && deno task docs && mv .coverage/html docs/coverage && rm -rf .coverage"
+  },
+  "exclude": [
+    "docs",
+    "dist"
+  ]
+}

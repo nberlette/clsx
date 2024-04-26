@@ -1,0 +1,46 @@
+{
+  "name": "Deno",
+  "dockerFile": "Dockerfile",
+  "remoteUser": "vscode",
+  // container features to add during the build step
+  "features": {
+    // "homebrew": "latest",
+    "git": "latest",
+    "github-cli": "latest",
+    "sshd": "latest",
+    "node": "latest"
+  },
+  "customizations": {
+    "vscode": {
+      // settings for the vscode editor
+      "settings": {
+        "deno.enable": true,
+        "deno.lint": true,
+        "deno.future": true,
+        "deno.codeLens.test": true,
+        "deno.codeLens.testArgs": [
+          "--allow-all",
+          "--no-check"
+        ],
+        "editor.tabSize": 2,
+        "editor.stickyTabStops": true,
+        "editor.linkedEditing": true,
+        "editor.minimap.enabled": false,
+        "editor.defaultFormatter": "denoland.vscode-deno",
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": true
+      },
+      // This will install the vscode-deno extension
+      "extensions": [
+        "denoland.vscode-deno",
+        "editorconfig.editorconfig",
+        "vsls-contrib.gistfs",
+        "sdras.night-owl",
+        "redhat.vscode-yaml",
+        "antfu.iconify",
+        "antfu.browse-lite",
+        "bierner.markdown-preview-github-styles"
+      ]
+    }
+  }
+}
