@@ -1,19 +1,28 @@
-# <img src="https://api.iconify.design/tabler:square-letter-m.svg?width=1.5rem&height=1.5rem&color=seagreen&inline=true" alt="Module" /> [`@nick/clsx`][GitHub]
+# [![][letter-m] `@nick/clsx`][GitHub]
 
-This is a modern rewrite of the popular [clsx](https://github.com/lukeed/clsx)
-package by [Luke Edwards](https://github.com/lukeed), which is a utility for
-constructing conditional class names in JavaScript and TypeScript from a set of
-mixed inputs.
+This is a utility for constructing conditional class names in JavaScript and
+TypeScript from a set of mixed inputs. It's based on the popular
+[`clsx`](https://github.com/lukeed/clsx) package by
+[Luke Edwards](https://github.com/lukeed), re-written and enhanced by
+[Nicholas Berlette] in 100% TypeScript using modern language features.
 
 In addition to being a drop-in replacement for the original, this package also
-introduces an advanced type-level implementation that provides a compile-time
-type-level preview of the className strings it expects to generate at runtime.
-This can be quite useful for catching typos and other errors before they occur.
+introduces an advanced type-level implementation of the `clsx` function. It
+leverages nearly identical logic as the runtime function, at a purely type
+level.
 
-## 📦 Install
+That type-level implementation affords you with a compile-time preview of the
+className strings that `clsx` expects to generate at runtime, without ever
+leaving your editor. This is quite useful for catching typos and errors before
+they occur.
 
-This package is distributed through the [JSR], [NPM], and [Deno] registries, and
-can be installed using your package manager of choice.
+## Usage
+
+### 📦 Install
+
+This package is distributed through **[JSR]**, **[NPM]**, and **[Deno]**.
+
+It can be installed using your package manager of choice:
 
 ```sh
 deno add @nick/clsx
@@ -24,8 +33,101 @@ npx jsr add @nick/clsx
 ```
 
 ```sh
+bun add @nberlette/clsx
+# or
+pnpm add @nberlette/clsx
+# or
+yarn add @nberlette/clsx
+# or
 npm install @nberlette/clsx
 ```
+
+### 📜 Import
+
+The package exports a single function, [`clsx`](#clsx), which can be imported as
+follows:
+
+```ts
+import { clsx } from "@nick/clsx";
+
+const className = clsx("foo", "bar", "baz");
+```
+
+If you're using the NPM package:
+
+```ts
+import { clsx } from "@nberlette/clsx";
+
+const className = clsx("foo", "bar", "baz");
+```
+
+Or, if you're importing from [deno.land][Deno]:
+
+```ts
+import { clsx } from "https://deno.land/x/clsx/mod.ts";
+
+const className = clsx("foo", "bar", "baz");
+```
+
+---
+
+# API
+
+## ![][letter-f] `clsx`
+
+Constructs a composite className string from a given set of mixed inputs.
+
+#### Signature
+
+```ts
+function clsx<T extends ClassInputs>(...classes: T): Clsx<T>;
+```
+
+#### Parameters
+
+| Name          | Info                                      |
+| :------------ | :---------------------------------------- |
+| **`classes`** | The class names to compile into a string. |
+
+#### Returns
+
+| Type                                 | Info                                                 |
+| :----------------------------------- | :--------------------------------------------------- |
+| [`Clsx<T, string>`](#clsxt-fallback) | Composite className string generated from the input. |
+
+---
+
+## ![][letter-t] `Clsx<T, Fallback>`
+
+```ts
+type Clsx<T, Fallback = string> = T extends ClassInputs
+  ? T["length"] extends 0 ? Fallback
+  : IsValidwInput<
+    T,
+    MergeValues<T, Fallback> extends infer S ? S extends "" ? Fallback : S
+      : Fallback,
+    Fallback
+  >
+  : Fallback;
+```
+
+The type-level equivalent of the [`clsx`](#clsx "clsx") function, which is used
+to render a compile-time preview of the className string expected to be
+generated.
+
+For your convenience, an optional `Fallback` type parameter can be specified,
+which will be used in an event where a suitable type cannot be inferred. The
+default fallback type is the generic `string` type, since the `clsx` function
+will always return a string at runtime.
+
+#### Type Parameters
+
+| Name       | Extends | Default  |
+| :--------- | :------ | :------- |
+| `T`        | `--`    | `--`     |
+| `Fallback` | `--`    | `string` |
+
+---
 
 ## Examples
 
@@ -54,86 +156,22 @@ const cn = clsx("w-1/2", "h-full", bgs[+dark]);
 //     ^? const cn: "w-1/2 h-full bg-white" | "w-1/2 h-full bg-black"
 ```
 
----
-
-## API
-
-### <img src="https://api.iconify.design/tabler:square-letter-f.svg?width=1.5rem&height=1.5rem&color=%23056CF0&inline=true" alt="Function" /> `clsx`
-
-Constructs a composite className string from a given set of mixed inputs.
-
-#### Signature
-
-```ts
-export function clsx<T extends ClassInputs>(...classes: T): Clsx<T>;
-```
-
-#### Parameters
-
-| Name          | Info                                      |
-| :------------ | :---------------------------------------- |
-| **`classes`** | The class names to compile into a string. |
-
-### <img src="https://api.iconify.design/tabler:square-letter-f.svg?width=1.5rem&height=1.5rem&color=%23056CF0&inline=true" alt="Function" /> `clsx`
-
-#### Signature
-
-```ts
-function clsx<T extends ClassInputs>(...clsx: T): Clsx<T>;
-```
-
-#### Parameters
-
-| Name          | Info                                      |
-| :------------ | :---------------------------------------- |
-| **`classes`** | The class names to compile into a string. |
+> For more examples, refer to the [test suite](./mod.test.ts).
 
 ---
 
-### <img src="https://api.iconify.design/tabler:square-letter-t.svg?width=1.5rem&height=1.5rem&color=%23A4478C&inline=true" alt="Type Alias" /> `Clsx<T, Fallback>`
-
-```ts
-export type Clsx<T, Fallback = string> = T extends ClassInputs
-  ? T["length"] extends 0 ? Fallback
-  : IsValidwInput<
-    T,
-    MergeValues<T, Fallback> extends infer S ? S extends "" ? Fallback : S
-      : Fallback,
-    Fallback
-  >
-  : Fallback;
-```
-
-The type-level equivalent of the [clsx](#clsx "clsx") function, which is used to
-render a compile-time preview of the className string expected to be generated.
-
-For your convenience, an optional `Fallback` type parameter can be specified,
-which will be used in an event where a suitable type cannot be inferred. The
-default fallback type is the generic `string` type, since the `clsx` function
-will always return a string at runtime.
-
-##### Type Parameters
-
-| Name       | Extends | Default  |
-| :--------- | :------ | :------- |
-| `T`        | `--`    | `--`     |
-| `Fallback` | `--`    | `string` |
-
----
+## Further Reading
 
 ### 🧑🏽‍💻 Contributing
 
-This project is open-source, and I welcome contributions of all kinds. Feel free
+This project is open-source, and I welcome contributions of any kind. Feel free
 to [open an issue] or [pull request] in the [GitHub Repository][GitHub] if you
-have any suggestions, bug reports, or feature requests. If you would like to
-contribute to the project, please check out the [Contributing Guide] for more
-information.
+have any suggestions, bug reports, or feature requests.
 
 ### 🐛 Bugs and Issues
 
 If you encounter any bugs or unexpected behavior, please [open an issue] in the
-[GitHub Repository][GitHub]. I will do my best to address the issue as soon as
-possible.
+[GitHub Repository][GitHub] so it can be addressed promptly. Thank you!
 
 ---
 
@@ -155,3 +193,6 @@ possible.
 [Docs]: https://nberlette.github.io/clsx "View the @nick/clsx documentation"
 [Contributing Guide]: https://github.com/nberlette/clsx/blob/main/.github/CONTRIBUTING.md "View the Contributing Guide"
 [pull request]: https://github.com/nberlette/clsx/pulls "Open a new pull request on GitHub"
+[letter-m]: https://api.iconify.design/tabler:square-letter-m.svg?width=1.5rem&height=1.5rem&color=seagreen&inline=true
+[letter-t]: https://api.iconify.design/tabler:square-letter-t.svg?width=1.5rem&height=1.5rem&color=orchid&inline=true
+[letter-f]: https://api.iconify.design/tabler:square-letter-f.svg?width=1.5rem&height=1.5rem&color=dodgerblue&inline=true
