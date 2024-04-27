@@ -118,7 +118,8 @@ const createPackageJson = ({
   ),
 });
 
-export const build = async (path: string, output?: string) => {
+export const build = async (...args: string[]) => {
+  let [path = ".", output] = args;
   const cwd = Deno.cwd();
   path = resolve(path);
   Deno.chdir(path);
@@ -176,4 +177,4 @@ export const build = async (path: string, output?: string) => {
   Deno.chdir(cwd);
 };
 
-if (import.meta.main) await build(Deno.args[0] || "./clsx");
+if (import.meta.main) await build(...Deno.args);
