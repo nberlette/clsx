@@ -11,7 +11,7 @@
   "lock": false,
   "publish": {
     "include": ["*.md", "*.ts", "*.json", "LICENSE"],
-    "exclude": ["*.test.*"]
+    "exclude": ["*.test.*", "scripts", "dist", "docs", ".coverage"]
   },
   "tasks": {
     "test": "deno test -A --check --coverage=.coverage",
@@ -20,7 +20,8 @@
     "lint": "deno lint .",
     "fmt": "deno fmt .",
     "docs": "deno doc --html --name=@nick/clsx --output=docs mod.ts",
-    "docs-test-coverage": "deno task test && deno task coverage && deno task docs && mv .coverage/html docs/coverage && rm -rf .coverage"
+    "prepublish": "deno task test && deno task coverage && deno task docs && mv .coverage/html docs/coverage && rm -rf .coverage",
+    "build": "deno run -A ./scripts/build.ts"
   },
   "exclude": [
     "docs",

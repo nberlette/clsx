@@ -3,17 +3,41 @@ on:
   push:
     branches:
       - main
-
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       id-token: write
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: 1.x
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
       - name: Publish to JSR
         run: npx jsr publish
-      - name: Publish
+      - name: Build for NPM
+        run: deno task build
+      - id: upload-build-artifact
+        name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-${{ github.sha }}
+          path: dist
+      - name: Publish to NPM
+        run: cd dist && npm publish --access public && cd ..
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to GitHub
+        run: |
+          cd dist
+          npm publish --registry https://npm.pkg.github.com --access public
+          cd ..
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
