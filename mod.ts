@@ -137,13 +137,21 @@ import type {
  * @copyright Luke Edwards. All rights reserved.
  * @copyright Nicholas Berlette. All rights reserved.
  * @license MIT
+ * @category Runtime
  */
 export function clsx<const T extends ClassValues>(
   ...classes: [...T]
 ): clsx<T>;
-export function clsx<const T extends ClassValues>(
-  classes: [[...T]],
-): clsx<T>;
+/**
+ * Generates a className string from the given class names.
+ *
+ * This overload is used when a literal input type cannot be inferred, and the
+ * output type defaults to `string` instead of a more specific literal type.
+ *
+ * @param classes The class names to compile into a string.
+ * @returns The compiled className string.
+ * @category Runtime
+ */
 export function clsx(...classes: ClassValues): string;
 /** @ignore */
 export function clsx(...classes: ClassValues): string {
