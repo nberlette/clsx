@@ -1,4 +1,19 @@
-import type { UnionToTuple } from "jsr:@type/union@^0.1.0";
+type UnionToIntersection<U> =
+  // deno-lint-ignore no-explicit-any
+  (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I
+    : never;
+
+type LastInUnion<U> =
+  UnionToIntersection<U extends unknown ? (U: U) => 0 : never> extends
+    (x: infer L) => 0 ? L : never;
+
+type UnionToTupleWorker<U, Last = LastInUnion<U>> = [U] extends [never] ? []
+  : [...UnionToTupleWorker<Exclude<U, Last>>, Last];
+
+// deno-fmt-ignore
+type UnionToTuple<U, Fallback = []> =
+  | UnionToTupleWorker<U> extends infer T extends readonly unknown[] ? T
+  : Fallback;
 
 /**
  * Asserts that the type of `expr` is identical to type `T`.
