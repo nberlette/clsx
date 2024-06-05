@@ -12,14 +12,30 @@
     "ghcr.io/devcontainers-contrib/features/act:1": {},
     "ghcr.io/devcontainers-contrib/features/actionlint:1": {}
   },
+  // settings for the vscode editor
   "customizations": {
     "vscode": {
-      // settings for the vscode editor
       "settings": {
-        "deno.enable": true,
-        "deno.lint": true,
-        "deno.future": true,
+        "deno.cacheOnSave": true,
         "deno.codeLens.test": true,
+        "deno.defaultTaskCommand": "run",
+        "deno.documentPreloadLimit": 100,
+        "deno.enable": true,
+        "deno.future": true,
+        "deno.internalDebug": true,
+        "deno.lint": true,
+        "deno.maxTsServerMemory": 4096,
+        "deno.suggest.imports.autoDiscover": true,
+        "deno.suggest.imports.hosts": {
+          "https://deno.land": true,
+          "jsr:": true,
+          "npm:": true,
+          "node:": true
+        },
+        "deno.unsafelyIgnoreCertificateErrors": [
+          "localhost"
+        ],
+        "deno.unstable": true,
         "editor.tabSize": 2,
         "editor.stickyTabStops": true,
         "editor.linkedEditing": true,
@@ -30,16 +46,17 @@
       },
       "extensions": [
         "github.theme",
+        "github.vscode-github-actions",
         "github.copilot",
-        "mutantdino.resourcemonitor",
         "denoland.vscode-deno",
         "editorconfig.editorconfig",
+        "vsls-contrib.gistfs",
         "redhat.vscode-yaml",
+        "antfu.browse-lite",
         "bierner.markdown-preview-github-styles",
-        "stkb.rewrap",
-        "github.vscode-github-actions",
-        "alphaxek.github-actions-locally"
+        "mutantdino.resourcemonitor"
       ]
     }
-  }
+  },
+  "postAttachCommand": ". /home/vscode/.bashrc"
 }
