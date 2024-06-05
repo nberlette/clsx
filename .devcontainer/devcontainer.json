@@ -4,24 +4,38 @@
   "remoteUser": "vscode",
   // container features to add during the build step
   "features": {
-    // "homebrew": "latest",
     "git": "latest",
-    "github-cli": "latest",
     "sshd": "latest",
-    "node": "latest"
+    "node": "latest",
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
+    "ghcr.io/devcontainers-contrib/features/act:1": {},
+    "ghcr.io/devcontainers-contrib/features/actionlint:1": {}
   },
+  // settings for the vscode editor
   "customizations": {
     "vscode": {
-      // settings for the vscode editor
       "settings": {
-        "deno.enable": true,
-        "deno.lint": true,
-        "deno.future": true,
+        "deno.cacheOnSave": true,
         "deno.codeLens.test": true,
-        "deno.codeLens.testArgs": [
-          "--allow-all",
-          "--no-check"
+        "deno.defaultTaskCommand": "run",
+        "deno.documentPreloadLimit": 100,
+        "deno.enable": true,
+        "deno.future": true,
+        "deno.internalDebug": true,
+        "deno.lint": true,
+        "deno.maxTsServerMemory": 4096,
+        "deno.suggest.imports.autoDiscover": true,
+        "deno.suggest.imports.hosts": {
+          "https://deno.land": true,
+          "jsr:": true,
+          "npm:": true,
+          "node:": true
+        },
+        "deno.unsafelyIgnoreCertificateErrors": [
+          "localhost"
         ],
+        "deno.unstable": true,
         "editor.tabSize": 2,
         "editor.stickyTabStops": true,
         "editor.linkedEditing": true,
@@ -30,17 +44,19 @@
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true
       },
-      // This will install the vscode-deno extension
       "extensions": [
+        "github.theme",
+        "github.vscode-github-actions",
+        "github.copilot",
         "denoland.vscode-deno",
         "editorconfig.editorconfig",
         "vsls-contrib.gistfs",
-        "sdras.night-owl",
         "redhat.vscode-yaml",
-        "antfu.iconify",
         "antfu.browse-lite",
-        "bierner.markdown-preview-github-styles"
+        "bierner.markdown-preview-github-styles",
+        "mutantdino.resourcemonitor"
       ]
     }
-  }
+  },
+  "postAttachCommand": ". /home/vscode/.bashrc"
 }
