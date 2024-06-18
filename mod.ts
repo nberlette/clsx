@@ -8,6 +8,11 @@ import type {
 } from "./_internal.ts";
 
 /**
+ * Type for arguments to the `clsx` function.
+ */
+export type { ClassValue } from "./_internal.ts";
+
+/**
  * @module clsx
  *
  * This module provides a type-safe utility for conditionally constructing
