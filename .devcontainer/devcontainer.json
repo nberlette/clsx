@@ -26,12 +26,6 @@
         "deno.lint": true,
         "deno.maxTsServerMemory": 4096,
         "deno.suggest.imports.autoDiscover": true,
-        "deno.suggest.imports.hosts": {
-          "https://deno.land": true,
-          "jsr:": true,
-          "npm:": true,
-          "node:": true
-        },
         "deno.unsafelyIgnoreCertificateErrors": [
           "localhost"
         ],
@@ -58,5 +52,5 @@
       ]
     }
   },
-  "postAttachCommand": ". /home/vscode/.bashrc"
+  "postStartCommand": "sudo deno upgrade --canary --force"
 }
